@@ -33,5 +33,8 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'org.immutables:gson:2.4.6'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     testCompile 'junit:junit:4.12'
 }
