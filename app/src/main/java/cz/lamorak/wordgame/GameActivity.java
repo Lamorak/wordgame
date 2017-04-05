@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import cz.lamorak.wordgame.model.Word;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -28,11 +30,13 @@ import io.reactivex.subjects.PublishSubject;
 
 public class GameActivity extends AppCompatActivity {
 
+    private static final int TIME_LIMIT = 15; // seconds
     private static final int WORD_LIMIT = 3; // seconds
 
     private CompositeDisposable disposables;
     private Disposable wordTimerDisposable;
     private PublishSubject<Boolean> guessSubject;
+    private AtomicInteger timeRemaining;
     private AtomicBoolean gameStarted;
     private List<Word> words;
 
@@ -54,6 +58,7 @@ public class GameActivity extends AppCompatActivity {
 
         disposables = new CompositeDisposable();
         guessSubject = PublishSubject.create();
+        timeRemaining = new AtomicInteger(TIME_LIMIT);
         gameStarted = new AtomicBoolean(false);
 
         countdown = (TextView) findViewById(R.id.countdown);
@@ -76,6 +81,16 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        disposables.add(
+                Observable.interval(1, TimeUnit.SECONDS)
+                        .filter(timeElapsed -> gameStarted.get())
+                        .take(timeRemaining.get())
+                        .map(timeElapsed -> timeRemaining.getAndDecrement())
+                        .map(String::valueOf)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnComplete(this::finishGame)
+                        .subscribe(timeString -> countdown.setText(timeString))
+        );
         disposables.add(
                 RxView.clicks(wrongButton)
                         .map(o -> false)
@@ -126,5 +141,9 @@ public class GameActivity extends AppCompatActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(l -> guessSubject.onNext(false));
         disposables.add(wordTimerDisposable);
+    }
+
+    private void finishGame() {
+        finish();
     }
 }
