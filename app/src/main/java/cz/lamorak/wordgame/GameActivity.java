@@ -13,6 +13,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import cz.lamorak.wordgame.model.Word;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -32,6 +33,7 @@ public class GameActivity extends AppCompatActivity {
     private CompositeDisposable disposables;
     private Disposable wordTimerDisposable;
     private PublishSubject<Boolean> guessSubject;
+    private AtomicBoolean gameStarted;
     private List<Word> words;
 
     private TextView countdown;
@@ -52,6 +54,7 @@ public class GameActivity extends AppCompatActivity {
 
         disposables = new CompositeDisposable();
         guessSubject = PublishSubject.create();
+        gameStarted = new AtomicBoolean(false);
 
         countdown = (TextView) findViewById(R.id.countdown);
         wordOriginal = (TextView) findViewById(R.id.word_original);
@@ -86,6 +89,9 @@ public class GameActivity extends AppCompatActivity {
         disposables.add(
                 guessSubject.subscribe(aBoolean -> displayWord())
         );
+        if (gameStarted.get()) {
+            displayWord();
+        }
     }
 
     @Override
@@ -96,6 +102,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void startGame(final List<Word> words) {
         this.words = words;
+        gameStarted.set(true);
         displayWord();
     }
 
