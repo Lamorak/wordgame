@@ -4,4 +4,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:textSize="24sp"
+        tools:text="59" />
+
+    <TextView
+        android:id="@+id/word_original"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textSize="36sp"
+        tools:text="holidays" />
+
+    <TextView
+        android:id="@+id/word_guess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"
+        android:textSize="36sp"
+        tools:text="vacaciones" />
+
+    <View
+        android:id="@+id/center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true" />
+
+    <Button
+        android:id="@+id/button_wrong"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/center"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:text="@string/game_button_wrong" />
+
+    <Button
+        android:id="@+id/button_correct"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/center"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:text="@string/game_button_correct" />
+
 </RelativeLayout>
