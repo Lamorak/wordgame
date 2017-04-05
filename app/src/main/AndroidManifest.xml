@@ -3,6 +3,7 @@
     package="cz.lamorak.wordgame">
 
     <application
+        android:name=".WordGameApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
