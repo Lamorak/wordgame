@@ -5,6 +5,14 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textSize="24sp"
+        tools:text="Score: 13" />
+
+    <TextView
         android:id="@+id/countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +25,7 @@
         android:id="@+id/word_original"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_below="@id/score"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:textSize="36sp"
@@ -27,10 +35,11 @@
         android:id="@+id/word_guess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_alignTop="@id/word_original"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_alignParentRight="true"
+        android:gravity="right"
         android:textSize="36sp"
         tools:text="vacaciones" />
 

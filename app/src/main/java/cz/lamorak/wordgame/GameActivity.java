@@ -35,11 +35,14 @@ public class GameActivity extends AppCompatActivity {
 
     private CompositeDisposable disposables;
     private Disposable wordTimerDisposable;
+    private PublishSubject<Boolean> correctSubject;
     private PublishSubject<Boolean> guessSubject;
     private AtomicInteger timeRemaining;
     private AtomicBoolean gameStarted;
+    private AtomicInteger score;
     private List<Word> words;
 
+    private TextView scoreView;
     private TextView countdown;
     private TextView wordOriginal;
     private TextView wordGuess;
@@ -57,10 +60,14 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         disposables = new CompositeDisposable();
+        correctSubject = PublishSubject.create();
         guessSubject = PublishSubject.create();
         timeRemaining = new AtomicInteger(TIME_LIMIT);
+        score = new AtomicInteger();
         gameStarted = new AtomicBoolean(false);
 
+        scoreView = (TextView) findViewById(R.id.score);
+        scoreView.setText(String.format(getString(R.string.game_score), score.get()));
         countdown = (TextView) findViewById(R.id.countdown);
         wordOriginal = (TextView) findViewById(R.id.word_original);
         wordGuess = (TextView) findViewById(R.id.word_guess);
@@ -104,6 +111,13 @@ public class GameActivity extends AppCompatActivity {
         disposables.add(
                 guessSubject.subscribe(aBoolean -> displayWord())
         );
+        disposables.add(
+                correctSubject.zipWith(guessSubject, (correctAnswer, guess) -> correctAnswer == guess)
+                        .filter(Boolean::booleanValue)
+                        .map(b -> score.incrementAndGet())
+                        .map(score -> String.format(getString(R.string.game_score), score))
+                        .subscribe(scoreView::setText)
+        );
         if (gameStarted.get()) {
             displayWord();
         }
@@ -134,6 +148,7 @@ public class GameActivity extends AppCompatActivity {
                 .setDuration(3000L)
                 .start();
 
+        correctSubject.onNext(true);
         if (wordTimerDisposable != null && !wordTimerDisposable.isDisposed()) {
             wordTimerDisposable.dispose();
         }
