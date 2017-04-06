@@ -16,21 +16,21 @@ import io.reactivex.Observer;
 
 public class HighscoresObservable extends Observable<List<Highscore>> {
 
-    public static final int HIGHSCORE_COUNT = 5;
-
+    private final int highscoreCount;
     private final Context context;
 
-    public HighscoresObservable(final Context context) {
+    public HighscoresObservable(final int highscoreCount, final Context context) {
+        this.highscoreCount = highscoreCount;
         this.context = context;
     }
 
     @Override
     protected void subscribeActual(final Observer<? super List<Highscore>> observer) {
         SharedPreferences preferences = context.getSharedPreferences("highscores", Context.MODE_PRIVATE);
-        final List<Highscore> highscores = new ArrayList<>(HIGHSCORE_COUNT);
-        for (int i = 0; i < HIGHSCORE_COUNT; i++) {
-            final String name = preferences.getString("highscore_name_" + i, "empty highscore");
-            final int value = preferences.getInt("highscore_value_" + i, 0);
+        final List<Highscore> highscores = new ArrayList<>(highscoreCount);
+        for (int i = 0; i < highscoreCount; i++) {
+            final String name = preferences.getString(Highscore.KEY_NAME + i, "empty highscore");
+            final int value = preferences.getInt(Highscore.KEY_VALUE + i, 0);
             highscores.add(new Highscore(name, value));
         }
         observer.onNext(highscores);

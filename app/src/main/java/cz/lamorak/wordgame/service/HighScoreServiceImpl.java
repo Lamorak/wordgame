@@ -14,6 +14,8 @@ import io.reactivex.Observable;
 
 public class HighScoreServiceImpl implements HighscoreService {
 
+    private static final int HIGHSCORE_COUNT = 5;
+
     private final Context context;
 
     public HighScoreServiceImpl(final Context context) {
@@ -22,6 +24,6 @@ public class HighScoreServiceImpl implements HighscoreService {
 
     @Override
     public Observable<List<Highscore>> getHighscores() {
-        return new HighscoresObservable(context);
+        return new HighscoresObservable(HIGHSCORE_COUNT, context);
     }
 }

@@ -6,6 +6,9 @@ package cz.lamorak.wordgame.model;
 
 public class Highscore {
 
+    public static final String KEY_NAME = "highscore_name_";
+    public static final String KEY_VALUE = "highscore_value_";
+
     private final String name;
     private final int value;
 
