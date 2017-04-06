@@ -77,6 +77,7 @@ public class GameActivity extends AppCompatActivity {
         scoreView = (TextView) findViewById(R.id.score);
         scoreView.setText(String.format(getString(R.string.game_score), score.get()));
         countdown = (TextView) findViewById(R.id.countdown);
+        countdown.setText(String.valueOf(TIME_LIMIT));
         wordOriginal = (TextView) findViewById(R.id.word_original);
         wordGuess = (TextView) findViewById(R.id.word_guess);
         correctButton = (Button) findViewById(R.id.button_correct);
