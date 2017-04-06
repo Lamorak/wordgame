@@ -7,6 +7,7 @@
     tools:context="cz.lamorak.wordgame.MainActivity">
 
     <TextView
+        android:id="@+id/highscore_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -27,5 +28,14 @@
         android:layout_centerInParent="true"
         android:backgroundTint="@color/colorAccent"
         android:text="@string/main_button_start" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/highscore_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@id/highscore_title"
+        android:layout_above="@id/button_start" />
 
 </RelativeLayout>
