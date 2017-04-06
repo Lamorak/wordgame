@@ -12,6 +12,7 @@ import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -140,15 +141,23 @@ public class GameActivity extends AppCompatActivity {
             finishGame();
         }
         final Word word = words.remove(0);
+        final Word wordWrong = words.remove(0);
+
         wordOriginal.setText(word.getEngllishWord());
-        wordGuess.setText(word.getSpanishWord());
+        boolean isCorrect = new Random().nextBoolean();
+        if (isCorrect) {
+            wordGuess.setText(word.getSpanishWord());
+        } else {
+            wordGuess.setText(wordWrong.getSpanishWord());
+        }
+        correctSubject.onNext(isCorrect);
+
         wordGuess.setTranslationY(0);
         wordGuess.animate()
                 .translationY(1000)
                 .setDuration(3000L)
                 .start();
 
-        correctSubject.onNext(true);
         if (wordTimerDisposable != null && !wordTimerDisposable.isDisposed()) {
             wordTimerDisposable.dispose();
         }
