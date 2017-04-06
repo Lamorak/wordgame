@@ -85,7 +85,7 @@ public class GameActivity extends AppCompatActivity {
                 Observable.interval(1, TimeUnit.SECONDS)
                         .filter(timeElapsed -> gameStarted.get())
                         .take(timeRemaining.get())
-                        .map(timeElapsed -> timeRemaining.getAndDecrement())
+                        .map(timeElapsed -> timeRemaining.decrementAndGet())
                         .map(String::valueOf)
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnComplete(this::finishGame)
