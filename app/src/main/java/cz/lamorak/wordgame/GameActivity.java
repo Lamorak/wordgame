@@ -36,7 +36,7 @@ import static cz.lamorak.wordgame.ScreenUtil.getScreenHeight;
 
 public class GameActivity extends AppCompatActivity {
 
-    private static final int TIME_LIMIT = 15; // seconds
+    private static final int TIME_LIMIT = 30; // seconds
     private static final int WORD_LIMIT = 3; // seconds
 
     private CompositeDisposable disposables;
@@ -122,8 +122,15 @@ public class GameActivity extends AppCompatActivity {
         );
         disposables.add(
                 correctSubject.zipWith(guessSubject, (correctAnswer, guess) -> correctAnswer == guess)
-                        .filter(Boolean::booleanValue)
-                        .map(b -> score.incrementAndGet())
+                        .map(answerCorrect -> {
+                            if (answerCorrect) {
+                                return score.incrementAndGet();
+                            } else if (score.get() > 0) {
+                                return score.decrementAndGet();
+                            } else {
+                                return score.get();
+                            }
+                        })
                         .map(score -> String.format(getString(R.string.game_score), score))
                         .subscribe(scoreView::setText)
         );
