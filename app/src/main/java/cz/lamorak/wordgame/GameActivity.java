@@ -1,11 +1,15 @@
 package cz.lamorak.wordgame;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
@@ -17,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import cz.lamorak.wordgame.model.Highscore;
 import cz.lamorak.wordgame.model.Word;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -162,12 +167,39 @@ public class GameActivity extends AppCompatActivity {
             wordTimerDisposable.dispose();
         }
         wordTimerDisposable = Observable.timer(WORD_LIMIT, TimeUnit.SECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(l -> guessSubject.onNext(false));
+                .filter(l -> gameStarted.get())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(l -> guessSubject.onNext(false));
         disposables.add(wordTimerDisposable);
     }
 
     private void finishGame() {
-        finish();
+        gameStarted.set(false);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.game_dialog_title);
+
+        final EditText input = new EditText(this);
+        input.setHint(R.string.game_dialog_hint);
+        builder.setView(input);
+        builder.setPositiveButton(R.string.game_dialog_confirm, (dialog, which) -> {
+            dialog.cancel();
+            saveScoreAndFinish(input.getText().toString());
+        });
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+            dialog.cancel();
+            finish();
+        });
+        builder.show();
+    }
+
+    private void saveScoreAndFinish(final String name) {
+        disposables.add(
+                WordGameApp.getServiceProvider().getHighscoreService()
+                        .updateHighscores(new Highscore(name, score.intValue()))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnComplete(this::finish)
+                        .subscribe()
+        );
     }
 }

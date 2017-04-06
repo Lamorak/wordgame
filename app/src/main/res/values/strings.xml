@@ -6,5 +6,8 @@
     <string name="game_score">score: %d</string>
     <string name="game_button_wrong">wrong</string>
     <string name="game_button_correct">correct</string>
+    <string name="game_dialog_title">Would you like to save your score?</string>
+    <string name="game_dialog_hint">your name</string>
+    <string name="game_dialog_confirm">save</string>
 
 </resources>
