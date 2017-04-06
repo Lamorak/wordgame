@@ -17,4 +17,8 @@ public class ServiceProvider {
     public WordService getWordService() {
         return new WordServiceImpl(context);
     }
+
+    public HighscoreService getHighscoreService() {
+        return new HighScoreServiceImpl(context);
+    }
 }
