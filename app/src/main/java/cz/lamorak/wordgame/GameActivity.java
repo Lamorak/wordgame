@@ -189,6 +189,7 @@ public class GameActivity extends AppCompatActivity {
             dialog.cancel();
             finish();
         });
+        builder.setCancelable(false);
         builder.show();
     }
 
@@ -201,5 +202,9 @@ public class GameActivity extends AppCompatActivity {
                         .doOnComplete(this::finish)
                         .subscribe()
         );
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }
