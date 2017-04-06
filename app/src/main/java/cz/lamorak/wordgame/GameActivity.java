@@ -1,13 +1,11 @@
 package cz.lamorak.wordgame;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +28,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
+import static cz.lamorak.wordgame.ScreenUtil.getScreenHeight;
+
 /**
  * Created by ondrej on 5.4.2017.
  */
@@ -47,6 +47,7 @@ public class GameActivity extends AppCompatActivity {
     private AtomicBoolean gameStarted;
     private AtomicInteger score;
     private List<Word> words;
+    private int screenHeight;
 
     private TextView scoreView;
     private TextView countdown;
@@ -71,6 +72,7 @@ public class GameActivity extends AppCompatActivity {
         timeRemaining = new AtomicInteger(TIME_LIMIT);
         score = new AtomicInteger();
         gameStarted = new AtomicBoolean(false);
+        screenHeight = getScreenHeight(this);
 
         scoreView = (TextView) findViewById(R.id.score);
         scoreView.setText(String.format(getString(R.string.game_score), score.get()));
@@ -159,8 +161,8 @@ public class GameActivity extends AppCompatActivity {
 
         wordGuess.setTranslationY(0);
         wordGuess.animate()
-                .translationY(1000)
-                .setDuration(3000L)
+                .translationY(screenHeight)
+                .setDuration(WORD_LIMIT * 1000)
                 .start();
 
         if (wordTimerDisposable != null && !wordTimerDisposable.isDisposed()) {
