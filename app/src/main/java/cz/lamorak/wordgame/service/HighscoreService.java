@@ -12,4 +12,6 @@ import io.reactivex.Observable;
 public interface HighscoreService {
 
     Observable<List<Highscore>> getHighscores();
+
+    Observable<List<Highscore>> updateHighscores(final Highscore highscore);
 }
