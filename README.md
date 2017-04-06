@@ -1,6 +1,5 @@
 # Wordgame
-
-[[https://github.com/lamorak/wordgame/blob/master/game.png|alt="game screenshot"]]
+![game screenshot](https://github.com/lamorak/wordgame/blob/master/game.png)
 
 ## Description
 This code challenge presents a simple game where user is presented one word in english and one word in spanish and has to decide withing given limit whether those words have the same meaning. The score represents number of right answers minus number of wrong answers but cannot be lower than zero. The app remembers five highscores with names of players.
